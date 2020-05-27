@@ -9,16 +9,17 @@ Various useful scripts for
 
 | tools                                                    | status |   dependencies   | description                                                  | usage                                                        |
 | -------------------------------------------------------- | :----: | :--------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`find_all_folders.sh`](tools/find_all_folders.sh)       |   --   |        --        | find all folders in `${Given_Dir}`                           | run in terminal under the root directory of this git repository. `./scripts/tools/find_all_folders.sh ${Given_Dir}` |
-| [`find_git_repo.sh`](tools/find_git_repo.sh)             |   --   |        --        | find all git repositories in `${Given_Dir}`                  | run in terminal under the root directory of this git repository. `./scripts/tools/find_git_repo.sh ${Given_Dir}` |
-| [`export_git_repo_dir.sh`](tools/export_git_repo_dir.sh) |   --   | find_git_repo.sh | export the path of all git repositories in `${Given_Dir}`    | run in terminal under the root directory of this git repository. `./scripts/tools/find_git_repo.sh ${Given_Dir}` |
-| [`git_update_batch.sh`](tools/git_update_batch.sh)       |   --   | find_git_repo.sh | do git instructions ${mode} in all git repositories in `${Given_Dir}` | run in terminal under the root directory of this git repository. `./scripts/tools/find_git_repo.sh ${Given_Dir} ${mode}` |
+| [`find_all_folders.sh`](tools/find_all_folders.sh)       |   --   |        --        | find all folders in `${Given_Dir}`                           | run in terminal under the root directory of this git repository. `./tools/find_all_folders.sh ${Given_Dir}` |
+| [`find_git_repo.sh`](tools/find_git_repo.sh)             |   --   |        --        | find all git repositories in `${Given_Dir}`                  | run in terminal under the root directory of this git repository. `./tools/find_git_repo.sh ${Given_Dir}` |
+| [`export_git_repo_dir.sh`](tools/export_git_repo_dir.sh) |   --   | find_git_repo.sh | export the path of all git repositories in `${Given_Dir}`    | run in terminal under the root directory of this git repository. `./tools/find_git_repo.sh ${Given_Dir}` |
+| [`git_update_batch.sh`](tools/git_update_batch.sh)       |   --   | find_git_repo.sh | do git instructions ${mode} in all git repositories in `${Given_Dir}` | run in terminal under the root directory of this git repository. `./tools/find_git_repo.sh ${Given_Dir} ${mode}` |
+| [`echo_with_color`](tools/echo_with_color)               |   --   |        --        | advanced echo function in terminal                           | get instructions by running `./tools/echo_with_color -h` in terminal under the root directory of this git repository. |
 
 > **Note**: 
 >
 > 1. if you don't input `${Given_Dir}`, then it will start from `~` i.e. `/home/user_name`.
 > 2. ${mode} now support: status, push, pull, fetch and remote.
-> 3. You can also run `./scripts/setup.sh` to setup alias and use `git_update_batch ${Given_Dir} ${mode}` and `find_git_repo ${Given_Dir}` in the terminal under arbitrary directory.
+> 3. You can also run `./setup.sh` to setup alias and use `git_update_batch ${Given_Dir} ${mode}` and `find_git_repo ${Given_Dir}` in the terminal under arbitrary directory.
 
 
 
