@@ -6,7 +6,33 @@ set -e  # exit on first error
 # get absolute path
 SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
 
+helpFunction(){
+    echo ""
+    echo "Usage: git_update_batch <path> <mode>"
+    echo ""
+    echo -e "  -h/--help  \tHelp"
+    echo -e "  <path>     \tGive the path as base dir to start searching,"
+    echo -e "             \tabsolute or relative paths are both ok."
+    echo -e "  <mode>     \tSupport status, push, pull, fetch and remote mode."
+    exit 1 # Exit script after printing help
+}
+
+mode_check(){
+    case $1 in
+        status) echo "git status mode";;
+        push) echo "git push mode";;
+        pull) echo "git pull mode";;
+        fetch) echo "git fetch mode";;
+        remote) echo "git remote mode";;
+        *) echo -e "\033[31m This script now only support status, push, pull, fetch and remote mode! \033[0m" && exit;;
+    esac
+}
+
 main(){
+	if [ $# -eq 0 ] || [ $# -gt 2 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+        helpFunction
+    fi
+
     # mode check
     mode_check $2
 
@@ -32,16 +58,5 @@ main(){
     done
 }
 
-mode_check(){
-    case $1 in
-        status) echo "git status mode";;
-        push) echo "git push mode";;
-        pull) echo "git pull mode";;
-        fetch) echo "git fetch mode";;
-        remote) echo "git remote mode";;
-        *) echo -e "\033[31m This script now only support status, push, pull, fetch and remote mode! \033[0m" && exit;;
-    esac
-}
-
-main $1 $2
+main $@
 

@@ -3,6 +3,16 @@ set -e  # exit on first error
 
 SUCCESSOR_DIR=$1
 
+helpFunction(){
+    echo ""
+    echo "Usage: find_all_folders <path>"
+    echo ""
+    echo -e "  -h/--help  \tHelp"
+    echo -e "  <path>     \tGive the path as base dir to start searching,"
+    echo -e "             \tabsolute or relative paths are both ok."
+    exit 1 # Exit script after printing help
+}
+
 findAllFolder(){
     echo "new findAllFolder in $1"
     cd $1
@@ -18,10 +28,13 @@ findAllFolder(){
 }
 
 main(){
+    if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+        helpFunction
+    fi
     BASE_DIR=$(cd $1 && pwd)
     echo -e "\033[47;30m current dir is: $BASE_DIR \033[0m"
     cd ${BASE_DIR}
     findAllFolder ${BASE_DIR}
 }
 
-main $1
+main $@
