@@ -21,7 +21,7 @@ setupBin(){
         ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
     fi
 
-    # git_update_batch
+    # echo_with_color
     APP_NAME="echo_with_color"
     if [ -f $BIN_DIR/$APP_NAME ]; then
         echo "Found bin entry: $BIN_DIR/$APP_NAME"
@@ -35,16 +35,23 @@ setupBin(){
 setupBashrc() {
     # git_update_batch alias
     if (grep -q "git_update_batch" ~/.bashrc); then
-        echo "Found bashrc entry: git_update_batch=$SCRIPT_DIR/tools/git_update_batch.sh"
+        echo "Found bashrc entry: git_update_batch=$SCRIPT_DIR/tools/git_update_batch"
     else
-        echo "alias git_update_batch='${SCRIPT_DIR}/tools/git_update_batch.sh'" >> ~/.bashrc
+        echo "alias git_update_batch='${SCRIPT_DIR}/tools/git_update_batch'" >> ~/.bashrc
     fi
     
     # find_git_repo alias
     if (grep -q "find_git_repo" ~/.bashrc); then
-        echo "Found bashrc entry: find_git_repo=$SCRIPT_DIR/tools/find_git_repo.sh"
+        echo "Found bashrc entry: find_git_repo=$SCRIPT_DIR/tools/find_git_repo"
     else
-        echo "alias find_git_repo='${SCRIPT_DIR}/tools/find_git_repo.sh'" >> ~/.bashrc
+        echo "alias find_git_repo='${SCRIPT_DIR}/tools/find_git_repo'" >> ~/.bashrc
+    fi
+
+    # echo_with_color alias
+    if (grep -q "echo_with_color" ~/.bashrc); then
+        echo "Found bashrc entry: echo_with_color=$SCRIPT_DIR/tools/echo_with_color"
+    else
+        echo "alias echo_with_color='${SCRIPT_DIR}/tools/echo_with_color'" >> ~/.bashrc
     fi
     
     # update
