@@ -12,7 +12,7 @@ main(){
 
     # find all git repositories in base directory, exit with no git repository.
     BASE_DIR=$(cd $1 && pwd)
-    source ${SCRIPT_DIR}/find_git_repo.sh ${BASE_DIR}
+    source ${SCRIPT_DIR}/find_git_repo ${BASE_DIR}
     if [ ${#GIT_REPO_DIR[*]} -lt 1 ]; then
         echo -e "\033[31m No git repository is found. \033[0m"
         exit

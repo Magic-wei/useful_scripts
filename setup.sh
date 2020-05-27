@@ -10,7 +10,7 @@ setupBin(){
     if [ -f $BIN_DIR/$APP_NAME ]; then
         echo "Found bin entry: $BIN_DIR/$APP_NAME"
     else
-        ln -sfn $SCRIPT_DIR/tools/$APP_NAME.sh $BIN_DIR/$APP_NAME
+        ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
     fi
 
     # find_git_repo
@@ -18,7 +18,7 @@ setupBin(){
     if [ -f $BIN_DIR/$APP_NAME ]; then
         echo "Found bin entry: $BIN_DIR/$APP_NAME"
     else
-        ln -sfn $SCRIPT_DIR/tools/$APP_NAME.sh $BIN_DIR/$APP_NAME
+        ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
     fi
 
     # git_update_batch
