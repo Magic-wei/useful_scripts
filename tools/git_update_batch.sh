@@ -3,7 +3,8 @@ set -e  # exit on first error
 
 # use ${GIT_REPO_DIR[*]} to access to git repository.
 
-SCRIPT_DIR=$( cd $( dirname ${BASH_SOURCE[0]} ) && pwd )
+# get absolute path
+SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
 
 main(){
     # mode check

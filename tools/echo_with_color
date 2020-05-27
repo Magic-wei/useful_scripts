@@ -30,7 +30,7 @@ WHITE='37m'
 
 helpFunction(){
     echo ""
-    echo "Usage: $0 [-c font_color] [-g bg_color] [-b] <string>"
+    echo "Usage: echo_with_color [-c font_color] [-g bg_color] [-b] <string>"
     echo ""
     echo -e "  -c \tFont color, support black(k), red(r), green(g), yellow(y),"
     echo -e "     \tblue(b), purple(p), dark_green(d) and white(w)"
