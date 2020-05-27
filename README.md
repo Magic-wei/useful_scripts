@@ -7,17 +7,17 @@ Various useful scripts for
 
 ### Tools
 
-It is recommended to run `./setup.sh` for setup in `$HOME/bin` or `$HOME/.bashrc`, then you use tools like `git_update_batch`, `find_git_repo` and `echo_with_color` directly in the terminal under arbitrary directory.
+**It is recommended to run `./setup.sh` for setup in `$HOME/bin` or `$HOME/.bashrc`, then you can use tools like `git_update_batch`, `find_git_repo` and `echo_with_color` directly in the terminal under arbitrary directory. You can easily get instructions for each tools by using `-h` or `--help` after the command.**
 
 * To setup entry in `$HOME/bin`, use `./setup.sh` or `./setup.sh bin`
 * To setup aliases in `$HOME/.bashrc`, use `./setup.sh bashrc`
 
-| tools                                              | status | dependencies  | description                                                  | usage                                                        |
+| tools                                              | status | dependencies  | description                                                  | usage example                                                |
 | -------------------------------------------------- | :----: | :-----------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [`find_all_folders`](tools/find_all_folders)       |   --   |      --       | find all folders in `${Given_Dir}`                           | run in terminal under the root directory of this git repository. `./tools/find_all_folders ${Given_Dir}` |
 | [`find_git_repo`](tools/find_git_repo)             |   --   |      --       | find all git repositories in `${Given_Dir}`                  | run in terminal under the root directory of this git repository. `./tools/find_git_repo ${Given_Dir}` |
 | [`export_git_repo_dir`](tools/export_git_repo_dir) |   --   | find_git_repo | export the path of all git repositories in `${Given_Dir}`    | run in terminal under the root directory of this git repository. `./tools/find_git_repo ${Given_Dir}` |
-| [`git_update_batch`](tools/git_update_batch)       |   --   | find_git_repo | do git instructions ${mode} in all git repositories in `${Given_Dir}` | run in terminal under the root directory of this git repository. `./tools/find_git_repo.sh ${Given_Dir} ${mode}` |
+| [`git_update_batch`](tools/git_update_batch)       |   --   | find_git_repo | do git commands ${mode} in all git repositories in `${Given_Dir}` | run in terminal under the root directory of this git repository. `./tools/find_git_repo ${Given_Dir} ${mode}` |
 | [`echo_with_color`](tools/echo_with_color)         |   --   |      --       | advanced echo function in terminal                           | get instructions by running `./tools/echo_with_color -h` in terminal under the root directory of this git repository. |
 
 > **Note**: 
