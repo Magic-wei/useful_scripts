@@ -1,10 +1,14 @@
 #!/bin/bash
 set -e  # exit on first error
 
-SCRIPT_DIR=$( cd $( dirname ${BASH_SOURCE[0]} ) && pwd )
+SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
 BIN_DIR=$HOME/bin
 
 setupBin(){
+    if [ ! -d $BIN_DIR ]; then
+        mkdir $BIN_DIR
+    fi
+
     # git_update_batch
     APP_NAME="git_update_batch"
     if [ -f $BIN_DIR/$APP_NAME ]; then
@@ -29,7 +33,7 @@ setupBin(){
         ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
     fi
 
-    echo "setup to $HOME/bin successfully!"
+    echo "setup to $BIN_DIR successfully!"
 }
 
 setupBashrc() {
