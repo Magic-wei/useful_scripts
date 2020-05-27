@@ -13,8 +13,8 @@ helpFunction(){
     exit 1 # Exit script after printing help
 }
 
-findAllFolder(){
-    # echo "new findAllFolder in $1"
+findGitRepo(){
+    # echo "new findGitRepo in $1"
     cd $1
     for sub in $(ls $1); do
         if (test -d ${sub}) ; then
@@ -25,7 +25,7 @@ findAllFolder(){
                 ITER=$[ ${ITER} + 1 ] # ITER=${ITER}+1 is also Okay.
             else
                 # echo "${SUCCESSOR_DIR} is a normal folder."
-                findAllFolder ${SUCCESSOR_DIR}
+                findGitRepo ${SUCCESSOR_DIR}
             fi
         fi
     done
@@ -48,9 +48,9 @@ main(){
         helpFunction
     fi
     BASE_DIR=$(cd $1 && pwd)
-    echo -e "\033[36m current dir is: ${BASE_DIR} \033[0m"
+    echo -e "\033[36mcurrent dir is: ${BASE_DIR} \033[0m"
     cd ${BASE_DIR}
-    findAllFolder ${BASE_DIR}
+    findGitRepo ${BASE_DIR}
     export GIT_REPO_DIR # use source ./*.sh to export variable
     echo "Found Git repositories: ${#GIT_REPO_DIR[*]}"
 }

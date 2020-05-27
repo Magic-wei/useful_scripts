@@ -40,14 +40,14 @@ main(){
     BASE_DIR=$(cd $1 && pwd)
     source ${SCRIPT_DIR}/find_git_repo ${BASE_DIR}
     if [ ${#GIT_REPO_DIR[*]} -lt 1 ]; then
-        echo -e "\033[31m No git repository is found. \033[0m"
+        echo -e "\033[31mNo git repository is found. \033[0m"
         exit
     fi
 
     # execute git instruction in a batch way
     for dir in ${GIT_REPO_DIR[*]}; do
         cd ${dir}
-        echo -e "\033[32m now in the git repository: ${dir} \033[0m" # green words
+        echo -e "\033[32mnow in the git repository: ${dir} \033[0m" # green words
         case $2 in
             status) git status;;
             push) git push;;
