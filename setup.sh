@@ -9,6 +9,14 @@ setupBin(){
         mkdir $BIN_DIR
     fi
 
+    # find_all_folders
+    APP_NAME="find_all_folders"
+    if [ -f $BIN_DIR/$APP_NAME ]; then
+        echo "Found bin entry: $BIN_DIR/$APP_NAME"
+    else
+        ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
+    fi
+
     # git_update_batch
     APP_NAME="git_update_batch"
     if [ -f $BIN_DIR/$APP_NAME ]; then
@@ -37,25 +45,36 @@ setupBin(){
 }
 
 setupBashrc() {
-    # git_update_batch alias
-    if (grep -q "git_update_batch" ~/.bashrc); then
-        echo "Found bashrc entry: git_update_batch=$SCRIPT_DIR/tools/git_update_batch"
+    # find_all_folders alias
+    APP_NAME="find_all_folders"
+    if (grep -q "${APP_NAME}" ~/.bashrc); then
+        echo "Found bashrc entry: ${APP_NAME}=$SCRIPT_DIR/tools/${APP_NAME}"
     else
-        echo "alias git_update_batch='${SCRIPT_DIR}/tools/git_update_batch'" >> ~/.bashrc
+        echo "alias ${APP_NAME}='${SCRIPT_DIR}/tools/${APP_NAME}'" >> ~/.bashrc
+    fi
+
+    # git_update_batch alias
+    APP_NAME="git_update_batch"
+    if (grep -q "${APP_NAME}" ~/.bashrc); then
+        echo "Found bashrc entry: ${APP_NAME}=$SCRIPT_DIR/tools/${APP_NAME}"
+    else
+        echo "alias ${APP_NAME}='${SCRIPT_DIR}/tools/${APP_NAME}'" >> ~/.bashrc
     fi
     
     # find_git_repo alias
-    if (grep -q "find_git_repo" ~/.bashrc); then
-        echo "Found bashrc entry: find_git_repo=$SCRIPT_DIR/tools/find_git_repo"
+    APP_NAME="find_git_repo"
+    if (grep -q "${APP_NAME}" ~/.bashrc); then
+        echo "Found bashrc entry: ${APP_NAME}=$SCRIPT_DIR/tools/${APP_NAME}"
     else
-        echo "alias find_git_repo='${SCRIPT_DIR}/tools/find_git_repo'" >> ~/.bashrc
+        echo "alias ${APP_NAME}='${SCRIPT_DIR}/tools/${APP_NAME}'" >> ~/.bashrc
     fi
 
     # echo_with_color alias
-    if (grep -q "echo_with_color" ~/.bashrc); then
-        echo "Found bashrc entry: echo_with_color=$SCRIPT_DIR/tools/echo_with_color"
+    APP_NAME="echo_with_color"
+    if (grep -q "${APP_NAME}" ~/.bashrc); then
+        echo "Found bashrc entry: ${APP_NAME}=$SCRIPT_DIR/tools/${APP_NAME}"
     else
-        echo "alias echo_with_color='${SCRIPT_DIR}/tools/echo_with_color'" >> ~/.bashrc
+        echo "alias ${APP_NAME}='${SCRIPT_DIR}/tools/${APP_NAME}'" >> ~/.bashrc
     fi
     
     # update
