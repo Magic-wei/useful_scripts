@@ -27,6 +27,16 @@ Various useful scripts for
 
 
 
+### Examples
+
+| examples                                                     | status | description                                                  |
+| ------------------------------------------------------------ | :----: | :----------------------------------------------------------- |
+| [`open_multiple_terminal.sh`](examples/open_multiple_terminal.sh) |   --   | Provide an example to create two terminals one-by-one with one second interval and execute given commands in these new terminals |
+
+> **Note**:
+>
+> * Usage: run `./scripts/examples/<*>.sh` in terminal under the root directory of this git repository. 
+
 ### Installers
 
 | installers                                                | status | dependencies | description                                                  | version |
