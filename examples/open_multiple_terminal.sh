@@ -3,7 +3,7 @@
 # By default, use 'gnome-terminal' command to create a new terminal:
 # > gnome-terminal --tab -- bash -ic "your commands;exec /bin/bash"
 # # we use '-i' for interactive bash to source ~/.bashrc automatically when start a new terminal.
-# You can also try other terminal like terminator (need to be installed first): 
+# You can also try other terminal like terminator (need to be installed): 
 # > terminator --title "title" -x bash -c "your commands;exec /bin/bash"
 # This script provide an example to craete two terminals one-by-one with 1 second interval 
 # and create folders and files under the script dir.
