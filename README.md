@@ -45,6 +45,7 @@ Various useful scripts for
 | [`install_okular.sh`](installers/install_okular.sh)       |   --   |      --      | [Okular](https://okular.kde.org/) is a universal document viewer developed by [KDE](https://www.kde.org/), which works on multiple platforms, including but not limited to Linux, Windows, macOS, *BSD, etc. | latest  |
 | [`install_sublime.sh`](installers/install_sublime.sh)     |   --   |      --      | [Sublime Text](https://www.sublimetext.com/) is a text editor for code, markup and prose, and [Sublime Merge](https://www.sublimemerge.com/) helps you better work on Git version control. | latest  |
 | [`install_typora.sh`](installers/install_typora.sh)       |   --   |      --      | [Typora](https://typora.io/) will give you a seamless experience as both a reader and a writer when using Markdown. | latest  |
+| [`install_peek.sh`](installers/install_peek.sh)           |   --   |      --      | [Peek](https://github.com/phw/peek) is a simple animated GIF screen recorder with an easy to use interface. | latest  |
 
 > **Note**:
 >
