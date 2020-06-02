@@ -90,7 +90,7 @@ main() {
     case $1 in
         "bin"    )  setupBin;;
         "bashrc" )  setupBashrc;;
-        ?) echo "Support installation option: bin ($HOME/bin, default for blank arg) or bashrc ($HOME/.bashrc)." && exit;;
+        ?) echo "Support installation option: bin ($HOME/bin, default for no arg) or bashrc ($HOME/.bashrc)." && exit;;
     esac
 }
 
