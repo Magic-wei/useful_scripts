@@ -46,6 +46,7 @@ Various useful scripts for
 | [`install_sublime.sh`](installers/install_sublime.sh)     |   --   |      --      | [Sublime Text](https://www.sublimetext.com/) is a text editor for code, markup and prose, and [Sublime Merge](https://www.sublimemerge.com/) helps you better work on Git version control. | latest  |
 | [`install_typora.sh`](installers/install_typora.sh)       |   --   |      --      | [Typora](https://typora.io/) will give you a seamless experience as both a reader and a writer when using Markdown. | latest  |
 | [`install_peek.sh`](installers/install_peek.sh)           |   --   |      --      | [Peek](https://github.com/phw/peek) is a simple animated GIF screen recorder with an easy to use interface. | latest  |
+| [`install_flameshot.sh`](installers/install_flameshot.sh) |   --   |      --      | [Flameshot](https://flameshot.js.org/) is a powerful yet simple to use screenshot software. |  0.6.0  |
 
 > **Note**:
 >
