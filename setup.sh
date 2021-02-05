@@ -33,6 +33,14 @@ setupBin(){
         ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
     fi
 
+    # gitcd
+    APP_NAME="gitcd"
+    if [ -f $BIN_DIR/$APP_NAME ]; then
+        echo "Found bin entry: $BIN_DIR/$APP_NAME"
+    else
+        ln -sfn $SCRIPT_DIR/tools/$APP_NAME $BIN_DIR/$APP_NAME
+    fi
+
     # echo_with_color
     APP_NAME="echo_with_color"
     if [ -f $BIN_DIR/$APP_NAME ]; then
