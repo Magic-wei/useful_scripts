@@ -9,21 +9,21 @@ Various useful scripts for
 
 **It is recommended to run `./setup.sh` for setup in `$HOME/bin` or `$HOME/.bashrc`, then you can use tools like `git_update_batch`, `find_git_repo` and `echo_with_color` directly in the terminal under arbitrary directory. You can easily get instructions for each tools by using `-h` or `--help` after the command.**
 
-* To setup entry in `$HOME/bin`, use `./setup.sh` or `./setup.sh bin`
+* To setup entry in `$HOME/bin` (default), use `./setup.sh` or `./setup.sh bin`
 * To setup aliases in `$HOME/.bashrc`, use `./setup.sh bashrc`
 
-| tools                                        | status | dependencies  | description                                                  | usage example                                                |
+| Tools                                        | Status | Dependencies  | Description                                                  | Usage                                                        |
 | -------------------------------------------- | :----: | :-----------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`find_all_folders`](tools/find_all_folders) |   --   |      --       | find all folders in `${Given_Dir}`                           | run in terminal under the root directory of this git repository. `./tools/find_all_folders ${Given_Dir}` |
-| [`find_git_repo`](tools/find_git_repo)       |   --   |      --       | find all git repositories in `${Given_Dir}`                  | run in terminal under the root directory of this git repository. `./tools/find_git_repo ${Given_Dir}` |
-| [`git_update_batch`](tools/git_update_batch) |   --   | find_git_repo | do git commands ${mode} in all git repositories in `${Given_Dir}` | run in terminal under the root directory of this git repository. `./tools/find_git_repo ${Given_Dir} ${mode}` |
-| [`echo_with_color`](tools/echo_with_color)   |   --   |      --       | advanced echo function in terminal                           | get instructions by running `./tools/echo_with_color -h` in terminal under the root directory of this git repository. |
+| [`find_all_folders`](tools/find_all_folders) |   --   |      --       | Find all folders in `${Given_Dir}`                           | Get instructions by running `find_all_folders -h` in terminal after successful installation. |
+| [`find_git_repo`](tools/find_git_repo)       |   --   |      --       | Find all git repositories in `${Given_Dir}`                  | Get instructions by running `find_git_repo -h` in terminal after successful installation. |
+| [`git_update_batch`](tools/git_update_batch) |   --   | find_git_repo | Apply git commands ${mode} to all git repositories in `${Given_Dir}` | Get instructions by running `git_update_batch -h` in terminal after successful installation. |
+| [`echo_with_color`](tools/echo_with_color)   |   --   |      --       | Advanced echo function in terminal with simplified commands  | Get instructions by running `echo_with_color -h` in terminal after successful installation. |
+| [`gitcd`](tools/gitcd)                       |   --   | find_git_repo | A roscd-like tool to change current directory to the root directory of a repo directly. Need to firstly create a dictionary of all git repos under specific path. | Get instructions by running `gitcd -h` in terminal after successful installation. |
 
 > **Note**: 
 >
 > 1. You can easily get instructions for each tools by using `-h` or `--help` after the command.
 > 2. `${Given_Dir}` can be either an absolute path or a relative path.
-> 3. ${mode} now support: status, push, pull, fetch and remote.
 
 
 
