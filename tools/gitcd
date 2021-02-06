@@ -1,135 +1,139 @@
 #!/bin/bash
-set -e  # exit on first error
 
-SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
-DICTIONARY_BASE=${HOME}/.gitcd.csv
-INIT_BASE=${HOME}/personal/wiki
-YESORNO=""
-OVERWRITE=false
-REPO_PATH=""
+gitcd(){
+    # Parameters
+    SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
+    DICTIONARY_BASE=${HOME}/.gitcd.csv
+    INIT_BASE=${HOME}/personal/wiki
+    YESORNO=""
+    OVERWRITE=false
+    REPO_PATH=""
 
-helpFunction(){
-    echo ""
-    echo "Usage: gitcd <option>/<repo_name>"
-    echo ""
-    echo -e "gitcd <option>"
-    echo ""
-    echo -e "  -h/--help     \tHelp"
-    echo -e "  init [path]   \tCreate a dictionary to contain the path of each repo."
-    echo -e "                \tUse [path] for only search git repos under given path."
-    echo -e "  list          \tGet the list of git repos you have in current "
-    echo -e "                \tdictionary."
-    echo -e "  clean         \tClean up the dictionary."
-    echo ""
-    echo -e "gitcd <repo_name> \tChange current directory to the root directory "
-    echo -e "                  \tof <repo_name>."
-    echo ""
-}
+    # Functions
+    helpFunction(){
+        echo ""
+        echo "Usage: gitcd <option>/<repo_name>"
+        echo ""
+        echo -e "gitcd <option>"
+        echo ""
+        echo -e "  -h/--help     \tHelp"
+        echo -e "  init [path]   \tCreate a dictionary to contain the path of each repo."
+        echo -e "                \tUse [path] for only search git repos under given path."
+        echo -e "  list          \tGet the list of git repos you have in current "
+        echo -e "                \tdictionary."
+        echo -e "  clean         \tClean up the dictionary."
+        echo ""
+        echo -e "gitcd <repo_name> \tChange current directory to the root directory "
+        echo -e "                  \tof <repo_name>."
+        echo ""
+        return 1
+    }
 
-getYesOrNo(){
-    read -p "Do you want to overwrite it [y/n]? " YESORNO
-    if [[ "$YESORNO" =~ ^(y|n|yes|no)$ ]]; then
-        if [ "$YESORNO" = "y" ] || [ "$YESORNO" = "yes" ]; then
-            OVERWRITE=true
+    overwriteORNot(){
+        read -p "Do you want to overwrite it [y/n]? " YESORNO
+        if [[ "$YESORNO" =~ ^(y|n|yes|no)$ ]]; then
+            if [ "$YESORNO" = "y" ] || [ "$YESORNO" = "yes" ]; then
+                OVERWRITE=true
+            else
+                OVERWRITE=false
+            fi
         else
-            OVERWRITE=false
+            overwriteORNot
         fi
-    else
-        getYesOrNo
-    fi
-}
+    }
 
-initDictionary(){
-    if findDictionary; then
-        echo "$DICTIONARY_BASE already exists."
-        getYesOrNo
-        if ($OVERWRITE); then
-            rm $DICTIONARY_BASE
+    initDictionary(){
+        if findDictionary; then
+            echo "$DICTIONARY_BASE already exists."
+            overwriteORNot
+            if ($OVERWRITE); then
+                rm $DICTIONARY_BASE
+                createDictionary
+            else
+                echo "Dictionary won't be overwritten."
+            fi
+        else
             createDictionary
-        else
-            echo "Dictionary won't be overwritten."
         fi
-    else
-        createDictionary
-    fi
-}
+    }
 
-createDictionary(){
-    touch $DICTIONARY_BASE
-    source ${SCRIPT_DIR}/find_git_repo ${INIT_BASE}
-    for dir in ${GIT_REPO_DIR[*]}; do
-        cd ${dir}
-        # echo -e "\033[32mnow in the git repository: ${dir} \033[0m" # green words
-        REPO_NAME=$(basename `git rev-parse --show-toplevel`)
-        echo "${REPO_NAME},${dir}" >> $DICTIONARY_BASE # >> append; > overwrite
-    done
-    echo "Dictionary is created successfully!"
-}
+    createDictionary(){
+        touch $DICTIONARY_BASE
+        source ${SCRIPT_DIR}/find_git_repo ${INIT_BASE}
+        for dir in ${GIT_REPO_DIR[*]}; do
+            cd ${dir}
+            # echo -e "\033[32mnow in the git repository: ${dir} \033[0m" # green words
+            REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+            echo "${REPO_NAME},${dir}" >> $DICTIONARY_BASE # >> append; > overwrite
+        done
+        echo "Dictionary is created successfully!"
+    }
 
-findDictionary(){
-    if [ -f "$DICTIONARY_BASE" ]; then
-        return 0 # true
-    else
-        return 1 # false
-    fi
-}
+    findDictionary(){
+        if [ -f "$DICTIONARY_BASE" ]; then
+            return 0 # true
+        else
+            return 1 # false
+        fi
+    }
 
-listDictionary(){
-    if findDictionary; then
-        readCSV $DICTIONARY_BASE
-    else
-        echo "Dictionary does not exist. Use 'gitcd init' first!"
-    fi
-}
+    listDictionary(){
+        if findDictionary; then
+            readCSV $DICTIONARY_BASE
+        else
+            echo "Dictionary does not exist. Use 'gitcd init' first!"
+        fi
+    }
 
-readCSV(){
-    # TODO: process csv with headers
-    while IFS=',' read repo_name repo_path
-    do
-        echo -e "${repo_name}"
-    done < $1
-}
-
-cleanDictionary(){
-    if findDictionary; then
-        rm $DICTIONARY_BASE
-        echo "Dictionary is deleted!"
-    else
-        echo "Dictionary does not exist."
-    fi
-}
-
-findRepoPath(){
-    if findDictionary; then
-        local FOUND=false
+    readCSV(){
+        # TODO: process csv with headers
         while IFS=',' read repo_name repo_path
         do
-            if [ ${repo_name} = $1 ]; then
-                REPO_PATH=${repo_path}
-                FOUND=true
-            fi
-        done < $DICTIONARY_BASE
-        if [ ${FOUND} = false ]; then
-            echo "Cannot find repo $1 in the repo dictionary."
+            echo -e "${repo_name}"
+        done < $1
+    }
+
+    cleanDictionary(){
+        if findDictionary; then
+            rm $DICTIONARY_BASE
+            echo "Dictionary is deleted!"
+        else
+            echo "Dictionary does not exist."
         fi
-    else
-        echo "Dictionary does not exist. Use 'gitcd init' first!"
-    fi
+    }
 
+    findRepoPath(){
+        if findDictionary; then
+            local FOUND=false
+            while IFS=',' read repo_name repo_path
+            do
+                if [ ${repo_name} = $1 ]; then
+                    REPO_PATH=${repo_path}
+                    FOUND=true
+                fi
+            done < $DICTIONARY_BASE
+            if [ ${FOUND} = false ]; then
+                echo "Cannot find repo $1 in the repo dictionary."
+            fi
+        else
+            echo "Dictionary does not exist. Use 'gitcd init' first!"
+        fi
+    }
+
+    main(){
+        if [ $# -eq 0 ] || [ $1 != "list" -a $# -gt 1 ] || [ $1 = "list" -a $# -gt 2 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+            helpFunction
+        else
+            # Find dictionary at a specific path
+            case $1 in
+                init) initDictionary;;
+                list) listDictionary;;
+                clean) cleanDictionary;;
+                   *) findRepoPath $1 && cd ${REPO_PATH};;
+            esac
+        fi
+    }
+
+    # Entry
+    main $@
 }
-
-main(){
-    if [ $# -eq 0 ] || [ $1 != "list" -a $# -gt 1 ] || [ $1 = "list" -a $# -gt 2 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
-        helpFunction
-    else
-        # Find dictionary at a specific path
-        case $1 in
-            init) initDictionary;;
-            list) listDictionary;;
-            clean) cleanDictionary;;
-               *) findRepoPath $1 && cd ${REPO_PATH};;
-        esac
-    fi
-}
-
-main $@

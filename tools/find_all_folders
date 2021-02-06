@@ -1,40 +1,45 @@
 #!/bin/bash
-set -e  # exit on first error
 
-SUCCESSOR_DIR=$1
+find_all_folders(){
+    # Parameters
+    SUCCESSOR_DIR=$1
 
-helpFunction(){
-    echo ""
-    echo "Usage: find_all_folders <path>"
-    echo ""
-    echo -e "  -h/--help  \tHelp"
-    echo -e "  <path>     \tGive the path as base dir to start searching,"
-    echo -e "             \tabsolute or relative paths are both ok."
-    exit 1 # Exit script after printing help
-}
+    # Functions
+    helpFunction(){
+        echo ""
+        echo "Usage: find_all_folders <path>"
+        echo ""
+        echo -e "  -h/--help  \tHelp"
+        echo -e "  <path>     \tGive the path as base dir to start searching,"
+        echo -e "             \tabsolute or relative paths are both ok."
+        exit 1
+    }
 
-findAllFolder(){
-    # echo "new findAllFolder in $1"
-    cd $1
-    for sub in $(ls $1); do
-        if (test -d ${sub}) ; then
-            SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
-            echo "$1/${sub} is a folder."
-            findAllFolder ${SUCCESSOR_DIR}
+    findAllFolder(){
+        # echo "new findAllFolder in $1"
+        cd $1
+        for sub in $(ls $1); do
+            if (test -d ${sub}) ; then
+                SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
+                echo "$1/${sub} is a folder."
+                findAllFolder ${SUCCESSOR_DIR}
+            fi
+        done
+        cd ..
+    }
+
+    main(){
+        if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+            helpFunction
         fi
-    done
-    cd ..
-    # pwd
+        BASE_DIR=$(cd $1 && pwd)
+        echo -e "\033[47;30m current dir is: $BASE_DIR \033[0m"
+        cd ${BASE_DIR}
+        findAllFolder ${BASE_DIR}
+    }
+
+    # Entry
+    main $@
 }
 
-main(){
-    if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
-        helpFunction
-    fi
-    BASE_DIR=$(cd $1 && pwd)
-    echo -e "\033[47;30m current dir is: $BASE_DIR \033[0m"
-    cd ${BASE_DIR}
-    findAllFolder ${BASE_DIR}
-}
-
-main $@
+find_all_folders $@

@@ -1,61 +1,64 @@
 #!/bin/bash
-set -e  # exit on first error
 
-ITER=0
+find_git_repo(){
+    # Parameters
+    ITER=0
 
-helpFunction(){
-    echo ""
-    echo "Usage: find_git_repo <path>"
-    echo ""
-    echo -e "  -h/--help   \tHelp"
-    echo -e "  <path>      \tGive the path as base dir to start searching,"
-    echo -e "              \tabsolute or relative paths are both ok."
-    exit 1 # Exit script after printing help
-}
+    # Functions
+    find_git_repoHelpFunction(){
+        echo ""
+        echo "Usage: find_git_repo <path>"
+        echo ""
+        echo -e "  -h/--help   \tHelp"
+        echo -e "  <path>      \tGive the path as base dir to start searching,"
+        echo -e "              \tabsolute or relative paths are both ok."
+        exit 1
+    }
 
-findGitRepo(){
-    # echo "new findGitRepo in $1"
-    cd $1
-    for sub in $(ls $1); do
-        if (test -d ${sub}) ; then
-            SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
-            if (isGitRepo ${SUCCESSOR_DIR}); then
-                echo "${SUCCESSOR_DIR} is a git repository."
-                GIT_REPO_DIR[ITER]=${SUCCESSOR_DIR}
-                ITER=$[ ${ITER} + 1 ] # ITER=${ITER}+1 is also Okay.
-            else
-                # echo "${SUCCESSOR_DIR} is a normal folder."
-                findGitRepo ${SUCCESSOR_DIR}
+    findGitRepo(){
+        # echo "new findGitRepo in $1"
+        cd $1
+        for sub in $(ls $1); do
+            if (test -d ${sub}) ; then
+                SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
+                if (isGitRepo ${SUCCESSOR_DIR}); then
+                    echo "${SUCCESSOR_DIR} is a git repository."
+                    GIT_REPO_DIR[ITER]=${SUCCESSOR_DIR}
+                    ITER=$[ ${ITER} + 1 ] # ITER=${ITER}+1 is also Okay.
+                else
+                    # echo "${SUCCESSOR_DIR} is a normal folder."
+                    findGitRepo ${SUCCESSOR_DIR}
+                fi
             fi
+        done
+        cd ..
+        # pwd
+    }
+
+    isGitRepo(){
+        # 0 - true; 1 - false
+        CANDIDATE_DIR=$1
+        if [ $(ls -al ${CANDIDATE_DIR} | grep "^d" | grep -w ".git" | wc -l) -eq 1 ]; then
+            return 0
+        else
+            return 1
         fi
-    done
-    cd ..
-    # pwd
+    }
+
+    main(){
+        if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+            find_git_repoHelpFunction
+        fi
+        BASE_DIR=$(cd $1 && pwd)
+        echo -e "\033[36mcurrent dir is: ${BASE_DIR} \033[0m"
+        cd ${BASE_DIR}
+        findGitRepo ${BASE_DIR}
+        export GIT_REPO_DIR # use source ./*.sh to export variable
+        echo "Found Git repositories: ${#GIT_REPO_DIR[*]}"
+    }
+
+    # Entry
+    main $@
 }
 
-isGitRepo(){
-    # 0 - true; 1 - false
-    CANDIDATE_DIR=$1
-    if [ $(ls -al ${CANDIDATE_DIR} | grep "^d" | grep -w ".git" | wc -l) -eq 1 ]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-main(){
-    if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
-        helpFunction
-    fi
-    BASE_DIR=$(cd $1 && pwd)
-    echo -e "\033[36mcurrent dir is: ${BASE_DIR} \033[0m"
-    cd ${BASE_DIR}
-    findGitRepo ${BASE_DIR}
-    export GIT_REPO_DIR # use source ./*.sh to export variable
-    echo "Found Git repositories: ${#GIT_REPO_DIR[*]}"
-}
-
-main $@
-
-
-
+find_git_repo $@

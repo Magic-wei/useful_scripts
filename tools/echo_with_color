@@ -1,117 +1,121 @@
 #!/bin/bash
-set -e  # exit on first error
 
-# start and eof
-START='\033['
-EOF='\033[0m'
+echo_with_color(){
+    # start and eof
+    START='\033['
+    EOF='\033[0m'
 
-# background
-BG_BLACK='40;'
-BG_RED='41;'
-BG_GREEN='42;'
-BG_YELOW='43;'
-BG_BLUE='44;'
-BG_PURPLE='45;'
-BG_DARK_GREEN='46;'
-BG_WHITE='47;'
+    # background
+    BG_BLACK='40;'
+    BG_RED='41;'
+    BG_GREEN='42;'
+    BG_YELOW='43;'
+    BG_BLUE='44;'
+    BG_PURPLE='45;'
+    BG_DARK_GREEN='46;'
+    BG_WHITE='47;'
 
-# font bold
-BOLD='1;'
-
-# font color
-BLACK='30m'
-RED='31m'
-GREEN='32m'
-YELOW='33m'
-BLUE='34m'
-PURPLE='35m'
-DARK_GREEN='36m'
-WHITE='37m'
-
-helpFunction(){
-    echo ""
-    echo "Usage: echo_with_color [-c font_color] [-g bg_color] [-b] <string>"
-    echo ""
-    echo -e "  -c \tFont color, support black(k), red(r), green(g), yellow(y),"
-    echo -e "     \tblue(b), purple(p), dark_green(d) and white(w)"
-    echo -e "  -g \tBackground color, support black(k), red(r), green(g), yellow(y),"
-    echo -e "     \tblue(b), purple(p), dark_green(d) and white(w)"
-    echo -e "  -b \tUse bold font"
-    echo -e "  -h \tHelp"
-    echo -e "  <string> \tThe string you want to display in terminal"
-    exit 1 # Exit script after printing help
-}
-
-echoWithColor(){
-    # arguments
-    key_color="c"
-    key_bg="g"
-    key_bold="b"
-    key_help="h"
-
-    if [ $# -eq 0 ] ; then
-        helpFunction
-    fi
-
-    while getopts ":${key_color}:${key_bg}:${key_bold}${key_help}" arg
-    do
-       case "$arg" in
-          ${key_color} )  font_color="$OPTARG" ;;
-          ${key_bg}    )  bg_color="$OPTARG";;
-          ${key_bold}  )  is_bold=true;;
-          ${key_help}|?)  helpFunction ;; # Print helpFunction in case parameter is non-existent
-       esac
-    done
-
-    # remove args above from arg list
-    shift $(($OPTIND - 1))
-
-    # string
-    string=$1
-
-    # start formulate string
-    final_string="${START}"
-    if [ "$is_bold" ]; then
-       final_string="${final_string}${BOLD}"
-    fi
-
-    # background color
-    if [ "$bg_color" ]; then
-        case $bg_color in
-            "k"|"black"     )  color=${BG_BLACK};;
-            "r"|"red"       )  color=${BG_RED};;
-            "g"|"green"     )  color=${BG_GREEN};;
-            "y"|"yellow"    )  color=${BG_YELOW};;
-            "b"|"blue"      )  color=${BG_BLUE};;
-            "p"|"purple"    )  color=${BG_PURPLE};;
-            "d"|"dark_green")  color=${BG_DARK_GREEN};;
-            "w"|"white"     )  color=${BG_WHITE};;
-            *) echo "Only support black(k), red(r), green(g), yellow(y), blue(b), purple(p), dark_green(d) and white(w) for background color." && exit;;
-        esac
-        final_string="${final_string}${color}"
-    fi
+    # font bold
+    BOLD='1;'
 
     # font color
-    if [ -z "$font_color" ]; then
-       font_color="white"
-    fi
-    case $font_color in
-        "k"|"black"     )  color=${BLACK};;
-        "r"|"red"       )  color=${RED};;
-        "g"|"green"     )  color=${GREEN};;
-        "y"|"yellow"    )  color=${YELOW};;
-        "b"|"blue"      )  color=${BLUE};;
-        "p"|"purple"    )  color=${PURPLE};;
-        "d"|"dark_green")  color=${DARK_GREEN};;
-        "w"|"white"     )  color=${WHITE};;
-        *) echo "Only support black(k), red(r), green(g), yellow(y), blue(b), purple(p), dark_green(d) and white(w) for font color." && exit;;
-    esac
-    final_string="${final_string}${color}"
+    BLACK='30m'
+    RED='31m'
+    GREEN='32m'
+    YELOW='33m'
+    BLUE='34m'
+    PURPLE='35m'
+    DARK_GREEN='36m'
+    WHITE='37m'
 
-    # end of string
-    final_string="${final_string}${string}${EOF}"
+    helpFunction(){
+        echo ""
+        echo "Usage: echo_with_color [-c font_color] [-g bg_color] [-b] <string>"
+        echo ""
+        echo -e "  -c \tFont color, support black(k), red(r), green(g), yellow(y),"
+        echo -e "     \tblue(b), purple(p), dark_green(d) and white(w)"
+        echo -e "  -g \tBackground color, support black(k), red(r), green(g), yellow(y),"
+        echo -e "     \tblue(b), purple(p), dark_green(d) and white(w)"
+        echo -e "  -b \tUse bold font"
+        echo -e "  -h \tHelp"
+        echo -e "  <string> \tThe string you want to display in terminal"
+        exit 1
+    }
 
-    echo -e "${final_string}"
+    main(){
+        # arguments
+        key_color="c"
+        key_bg="g"
+        key_bold="b"
+        key_help="h"
+
+        if [ $# -eq 0 ] ; then
+            helpFunction
+        fi
+
+        while getopts ":${key_color}:${key_bg}:${key_bold}${key_help}" arg
+        do
+           case "$arg" in
+              ${key_color} )  font_color="$OPTARG" ;;
+              ${key_bg}    )  bg_color="$OPTARG";;
+              ${key_bold}  )  is_bold=true;;
+              ${key_help}|?)  helpFunction ;; # Print helpFunction in case parameter is non-existent
+           esac
+        done
+
+        # remove args above from arg list
+        shift $(($OPTIND - 1))
+
+        # string
+        string=$1
+
+        # start formulate string
+        final_string="${START}"
+        if [ "$is_bold" ]; then
+           final_string="${final_string}${BOLD}"
+        fi
+
+        # background color
+        if [ "$bg_color" ]; then
+            case $bg_color in
+                "k"|"black"     )  color=${BG_BLACK};;
+                "r"|"red"       )  color=${BG_RED};;
+                "g"|"green"     )  color=${BG_GREEN};;
+                "y"|"yellow"    )  color=${BG_YELOW};;
+                "b"|"blue"      )  color=${BG_BLUE};;
+                "p"|"purple"    )  color=${BG_PURPLE};;
+                "d"|"dark_green")  color=${BG_DARK_GREEN};;
+                "w"|"white"     )  color=${BG_WHITE};;
+                *) echo "Only support black(k), red(r), green(g), yellow(y), blue(b), purple(p), dark_green(d) and white(w) for background color." && exit 1;;
+            esac
+            final_string="${final_string}${color}"
+        fi
+
+        # font color
+        if [ -z "$font_color" ]; then
+           font_color="white"
+        fi
+        case $font_color in
+            "k"|"black"     )  color=${BLACK};;
+            "r"|"red"       )  color=${RED};;
+            "g"|"green"     )  color=${GREEN};;
+            "y"|"yellow"    )  color=${YELOW};;
+            "b"|"blue"      )  color=${BLUE};;
+            "p"|"purple"    )  color=${PURPLE};;
+            "d"|"dark_green")  color=${DARK_GREEN};;
+            "w"|"white"     )  color=${WHITE};;
+            *) echo "Only support black(k), red(r), green(g), yellow(y), blue(b), purple(p), dark_green(d) and white(w) for font color." && exit 1;;
+        esac
+        final_string="${final_string}${color}"
+
+        # end of string
+        final_string="${final_string}${string}${EOF}"
+
+        echo -e "${final_string}"
+    }
+
+    # Entry
+    main $@
 }
 
-echoWithColor $@
+echo_with_color $@
