@@ -145,7 +145,7 @@ gitcd(){
     }
 
     main(){
-        if [ $# -eq 0 ] || [ $1 != "list" -a $# -gt 1 ] || [ $1 = "list" -a $# -gt 2 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
+        if [ $# -eq 0 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
             helpFunction
         else
             # Find dictionary at a specific path
