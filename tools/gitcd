@@ -4,9 +4,8 @@ gitcd(){
     # Parameters
     SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
     DICTIONARY_BASE=${HOME}/.gitcd.csv
-    INIT_BASE=${HOME}/personal/wiki
+    INIT_BASE=${HOME}
     YESORNO=""
-    OVERWRITE=false
     REPO_PATH=""
 
     # Functions
@@ -33,9 +32,9 @@ gitcd(){
         read -p "Do you want to overwrite it [y/n]? " YESORNO
         if [[ "$YESORNO" =~ ^(y|n|yes|no)$ ]]; then
             if [ "$YESORNO" = "y" ] || [ "$YESORNO" = "yes" ]; then
-                OVERWRITE=true
+                return 0
             else
-                OVERWRITE=false
+                return 1
             fi
         else
             overwriteORNot
@@ -56,7 +55,7 @@ gitcd(){
 
     getInitSearchBase(){
         read -p "Set the path where you want to search existed git repos: " INPUT_BASE
-        if [ ${INPUT_BASE} == "" ] || (test -d ${INPUT_BASE}); then
+        if [ ! -z "${INPUT_BASE}" ] || (test -d "${INPUT_BASE}"); then
             INIT_BASE=${INPUT_BASE}
             return 0
         else
@@ -68,8 +67,7 @@ gitcd(){
     initDictionary(){
         if findDictionary; then
             echo "$DICTIONARY_BASE already exists."
-            overwriteORNot
-            if ($OVERWRITE); then
+            if overwriteORNot; then
                 rm $DICTIONARY_BASE
                 createDictionary
             else
@@ -86,7 +84,6 @@ gitcd(){
         source ${SCRIPT_DIR}/find_git_repo ${INIT_BASE}
         for dir in ${GIT_REPO_DIR[*]}; do
             cd ${dir}
-            # echo -e "\033[32mnow in the git repository: ${dir} \033[0m" # green words
             REPO_NAME=$(basename `git rev-parse --show-toplevel`)
             echo "${REPO_NAME},${dir}" >> $DICTIONARY_BASE # >> append; > overwrite
         done
