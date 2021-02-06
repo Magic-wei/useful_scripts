@@ -5,7 +5,7 @@ find_git_repo(){
     ITER=0
 
     # Functions
-    find_git_repoHelpFunction(){
+    helpFunction(){
         echo ""
         echo "Usage: find_git_repo <path>"
         echo ""
@@ -16,11 +16,10 @@ find_git_repo(){
     }
 
     findGitRepo(){
-        # echo "new findGitRepo in $1"
-        cd $1
-        for sub in $(ls $1); do
-            if (test -d ${sub}) ; then
-                SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
+        local SEARCH_BASE=$1
+        for sub in $(ls ${SEARCH_BASE}); do
+            if (test -d ${SEARCH_BASE}/${sub}) ; then
+                SUCCESSOR_DIR=$( cd ${SEARCH_BASE}/${sub} && pwd)
                 if (isGitRepo ${SUCCESSOR_DIR}); then
                     echo "${SUCCESSOR_DIR} is a git repository."
                     GIT_REPO_DIR[ITER]=${SUCCESSOR_DIR}
@@ -31,30 +30,27 @@ find_git_repo(){
                 fi
             fi
         done
-        cd ..
-        # pwd
     }
 
     isGitRepo(){
-        # 0 - true; 1 - false
         CANDIDATE_DIR=$1
         if [ $(ls -al ${CANDIDATE_DIR} | grep "^d" | grep -w ".git" | wc -l) -eq 1 ]; then
-            return 0
+            return 0 # true
         else
-            return 1
+            return 1 # false
         fi
     }
 
     main(){
         if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
-            find_git_repoHelpFunction
+            helpFunction
+        else
+            BASE_DIR=$(cd $1 && pwd)
+            echo -e "\033[36mcurrent dir is: ${BASE_DIR} \033[0m"
+            findGitRepo ${BASE_DIR}
+            export GIT_REPO_DIR
+            echo "Found Git repositories: ${#GIT_REPO_DIR[*]}"
         fi
-        BASE_DIR=$(cd $1 && pwd)
-        echo -e "\033[36mcurrent dir is: ${BASE_DIR} \033[0m"
-        cd ${BASE_DIR}
-        findGitRepo ${BASE_DIR}
-        export GIT_REPO_DIR # use source ./*.sh to export variable
-        echo "Found Git repositories: ${#GIT_REPO_DIR[*]}"
     }
 
     # Entry

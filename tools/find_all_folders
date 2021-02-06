@@ -16,26 +16,24 @@ find_all_folders(){
     }
 
     findAllFolder(){
-        # echo "new findAllFolder in $1"
-        cd $1
-        for sub in $(ls $1); do
-            if (test -d ${sub}) ; then
-                SUCCESSOR_DIR=$( cd $1/${sub} && pwd)
-                echo "$1/${sub} is a folder."
+        local SEARCH_BASE=$1
+        for sub in $(ls ${SEARCH_BASE}); do
+            if (test -d ${SEARCH_BASE}/${sub}) ; then
+                SUCCESSOR_DIR=$( cd ${SEARCH_BASE}/${sub} && pwd)
+                echo "${SEARCH_BASE}/${sub} is a folder."
                 findAllFolder ${SUCCESSOR_DIR}
             fi
         done
-        cd ..
     }
 
     main(){
         if [ $# -eq 0 ] || [ $# -gt 1 ] || [ $1 = "-h" ] || [ $1 = "--help" ] ; then
             helpFunction
+        else
+            BASE_DIR=$(cd $1 && pwd)
+            echo -e "\033[47;30m current dir is: $BASE_DIR \033[0m"
+            findAllFolder ${BASE_DIR}
         fi
-        BASE_DIR=$(cd $1 && pwd)
-        echo -e "\033[47;30m current dir is: $BASE_DIR \033[0m"
-        cd ${BASE_DIR}
-        findAllFolder ${BASE_DIR}
     }
 
     # Entry
