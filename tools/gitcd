@@ -161,3 +161,14 @@ gitcd(){
     # Entry
     main $@
 }
+
+__gitcdCompletions()
+{
+  if [ "${#COMP_WORDS[@]}" != "2" ]; then
+    return
+  fi
+
+  COMPREPLY=($(compgen -W "--help -h init list clean" "${COMP_WORDS[1]}"))
+}
+
+complete -F __gitcdCompletions gitcd
