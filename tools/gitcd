@@ -42,6 +42,29 @@ gitcd(){
         fi
     }
 
+    changeDefaultSearchPath(){
+        echo "Default path where we will start searching existed git repos are: ${INIT_BASE}"
+        read -p "Do you want to change it [y/n]? " YESORNO
+        if [[ "$YESORNO" =~ ^(y|n|yes|no)$ ]]; then
+            if [ "$YESORNO" = "y" ] || [ "$YESORNO" = "yes" ]; then
+                getInitSearchBase
+            fi
+        else
+            changeDefaultSearchPath
+        fi
+    }
+
+    getInitSearchBase(){
+        read -p "Set the path where you want to search existed git repos: " INPUT_BASE
+        if [ ${INPUT_BASE} == "" ] || (test -d ${INPUT_BASE}); then
+            INIT_BASE=${INPUT_BASE}
+            return 0
+        else
+            echo "It's either a valid path or an existed path!"
+            getInitSearchBase
+        fi
+    }
+
     initDictionary(){
         if findDictionary; then
             echo "$DICTIONARY_BASE already exists."
@@ -58,6 +81,7 @@ gitcd(){
     }
 
     createDictionary(){
+        changeDefaultSearchPath
         touch $DICTIONARY_BASE
         source ${SCRIPT_DIR}/find_git_repo ${INIT_BASE}
         for dir in ${GIT_REPO_DIR[*]}; do
