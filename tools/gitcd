@@ -3,7 +3,8 @@
 gitcd(){
     # Parameters
     SCRIPT_DIR=$( cd $( dirname $(readlink -f ${BASH_SOURCE[0]}) ) && pwd )
-    DICTIONARY_BASE=${HOME}/.gitcd.csv
+    DICTIONARY_BASE=${HOME}/.config/gitcd
+    DICTIONARY_FILE=dictionary.csv
     INIT_BASE=${HOME}
     YESORNO=""
     REPO_PATH=""
@@ -66,9 +67,9 @@ gitcd(){
 
     initDictionary(){
         if findDictionary; then
-            echo "$DICTIONARY_BASE already exists."
+            echo "$DICTIONARY_BASE/$DICTIONARY_FILE already exists."
             if overwriteORNot; then
-                rm $DICTIONARY_BASE
+                rm $DICTIONARY_BASE/$DICTIONARY_FILE
                 createDictionary
             else
                 echo "Dictionary won't be overwritten."
@@ -78,20 +79,24 @@ gitcd(){
         fi
     }
 
+
     createDictionary(){
         changeDefaultSearchPath
-        touch $DICTIONARY_BASE
+        if [ ! -d $DICTIONARY_BASE ]; then
+            mkdir $DICTIONARY_BASE
+        fi
+        touch $DICTIONARY_BASE/$DICTIONARY_FILE
         source ${SCRIPT_DIR}/find_git_repo ${INIT_BASE}
         for dir in ${GIT_REPO_DIR[*]}; do
             cd ${dir}
             REPO_NAME=$(basename `git rev-parse --show-toplevel`)
-            echo "${REPO_NAME},${dir}" >> $DICTIONARY_BASE # >> append; > overwrite
+            echo "${REPO_NAME},${dir}" >> $DICTIONARY_BASE/$DICTIONARY_FILE # >> append; > overwrite
         done
         echo "Dictionary is created successfully!"
     }
 
     findDictionary(){
-        if [ -f "$DICTIONARY_BASE" ]; then
+        if [ -f "$DICTIONARY_BASE/$DICTIONARY_FILE" ]; then
             return 0 # true
         else
             return 1 # false
@@ -100,14 +105,13 @@ gitcd(){
 
     listDictionary(){
         if findDictionary; then
-            readCSV $DICTIONARY_BASE
+            readCSV $DICTIONARY_BASE/$DICTIONARY_FILE
         else
             echo "Dictionary does not exist. Use 'gitcd init' first!"
         fi
     }
 
     readCSV(){
-        # TODO: process csv with headers
         while IFS=',' read repo_name repo_path
         do
             echo -e "${repo_name}"
@@ -116,7 +120,7 @@ gitcd(){
 
     cleanDictionary(){
         if findDictionary; then
-            rm $DICTIONARY_BASE
+            rm $DICTIONARY_BASE/$DICTIONARY_FILE
             echo "Dictionary is deleted!"
         else
             echo "Dictionary does not exist."
@@ -132,7 +136,7 @@ gitcd(){
                     REPO_PATH=${repo_path}
                     FOUND=true
                 fi
-            done < $DICTIONARY_BASE
+            done < $DICTIONARY_BASE/$DICTIONARY_FILE
             if [ ${FOUND} = false ]; then
                 echo "Cannot find repo $1 in the repo dictionary."
             fi
